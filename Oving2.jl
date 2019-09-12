@@ -17,12 +17,14 @@ function createlinkedlist(length)
 end
 
 function findindexinlist(linkedlist, index)
-    i = 0;
-    if (index > size(::linkedlist))
+    i = 0
+    VALUEVAR = 0
+    NEXTVAR = Union{Node, Nothing}
+    if (false)
         return -1
     else
         while(i < index)
-            
+            NEXTVAR = linkedlist.next
             i += 1
         end
         return linkedlist.value
@@ -31,6 +33,6 @@ end
 
 node = createlinkedlist(10)
 
-print(findindexinlist(node, 5))
-
+println(findindexinlist(node, 5))
+println(node)
 
