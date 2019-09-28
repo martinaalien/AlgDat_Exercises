@@ -7,10 +7,10 @@ xsortert2 = [1 0; 2 1; 3 4; 4 2; 5 8;]
 
 # x og y er to sorterte tabeller, coordinate angir koordinat
 function mergearrays(x,y,coordinate)
-    lengde = size(x, 1) + size(y, 1)
+    lengde::Int = size(x, 1) + size(y, 1)
     # result = Array{Float64}(undef, size(x, 1), size(y, 1), 2)
-    x = vcat(x, [Inf Inf])
-    y = vcat(y, [Inf Inf])
+    x = vcat(x, [Inf, Inf])
+    y = vcat(y, [Inf, Inf])
     nytabell = []
     i = j = 1
     while(i <= lengde/2)
@@ -29,23 +29,24 @@ function mergearrays(x,y,coordinate)
 end
 
 # x er en usortert tabell, coordinate angir koordinat vi skal sortere langs
-function mergesort(x, coordinate, first, last)
-    tmp1 = []
-    tmp2 = []
+function mergesort(x, coordinate)
+    first::Int = 1
+    last::Int = size(x, 1)
     if (first < last)
-        middle = (first + last)/2
-        mergesort(x, coordinate, first, middle)
-        mergesort(x, coordinate, middle + 1, last)
-        for i in 0:(middle - first + 1)
-            tmp1 = x[first + i]
+        middle::Int = (first + last - rem(first +last, 2))/2
+        tmp1 = []
+        tmp2 = []
+        for i in 0:(middle - first)
+            push!(tmp1, x[first + i, :])
         end
-
-        for j in 0:(last - middle)
-            tmp2 = x[middle + 1 + j]
+        for j in 0:(last - middle - 1)
+            push!(tmp2, x[middle + j + 1, :])
         end
-
+        mergesort(tmp1, coordinate)
+        mergesort(tmp2, coordinate)
         mergearrays(tmp1, tmp2, coordinate)
     end
-
 end
-print(mergearrays(xsortert1, xsortert2, 1))
+
+print(mergesort(tabell1, 2))
+# print(mergearrays(xsortert1, xsortert2, 1))
