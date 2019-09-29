@@ -44,6 +44,28 @@ function mergesort(x, coordinate)
 end
 ##########################################################################
 
+
+##########################################################################
+#
+#   Brute force - Shortest distance between two points
+#
+##########################################################################
+disttab = [1 1; 10 0; 2 2; 5 5]
+
+function bruteforce(x)
+    sizearray = size(x, 1)
+    bestresult::Float64 = Inf
+    for i in 1:sizearray-1
+        for j in i+1:sizearray
+            if (bestresult > sqrt((x[j, 1] - x[i, 1])^2 + (x[j, 2] - x[i, 2])^2))
+                bestresult = sqrt((x[j, 1] - x[i, 1])^2 + (x[j, 2] - x[i, 2])^2)
+            end
+        end
+    end
+    return bestresult
+end
+##########################################################################
+
 ##########################################################################
 #
 #   Split in two
@@ -96,4 +118,6 @@ end
 
 
 println("mergesort: ", mergesort(tabell, 1))
+
+println("bruteforce: ",bruteforce(disttab))
 println("splitintwo: ",splitintwo(x, y))
