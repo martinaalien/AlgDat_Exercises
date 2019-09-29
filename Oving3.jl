@@ -44,6 +44,57 @@ function mergesort(x, coordinate)
 end
 ##########################################################################
 
+##########################################################################
+#
+#   Binary interval search
+#
+##########################################################################
+bintable = [1.0 0.0; 2.0 0.0; 3.0 0.0; 4.0 0.0]
+
+function binaryintervalsearch(x, delta, coordinate)
+    middle::Int = (size(x, 1) - rem(size(x, 1), 2))/2
+    if (rem(size(x, 1), 2) == 0)
+        median = (x[middle, coordinate] + x[middle+1, coordinate])/2
+    else
+        median = x[middle + 1, coordinate] 
+    end
+    if (delta*2 > size(x, 1))
+        lowerpos = 1
+        upperpos = size(x, 1)
+    else
+        upperpos = median + delta
+        lowerpos = median - delta
+    end
+    smallest = Inf
+    biggest = -Inf
+    for i in 1:size(x, 1)
+        if(smallest > x[i, coordinate])
+            smallest = x[i, coordinate]
+        end 
+        if(biggest < x[i, coordinate]) 
+            biggest = x[i, coordinate]
+        end
+    end
+    if ((delta < 0.5) && (rem(median, 1.0) != 0.0))
+        return -1, -1
+    else
+        if ((rem(lowerpos, 1.0) == 0))
+            i = lowerpos
+            while (i < upperpos)
+                i += 1
+            end
+            return lowerpos, i
+        else
+            i::Int = lowerpos - rem(lowerpos, 1.0)
+            while ((i < upperpos - rem(upperpos, 1) || x[1 + i, coordinate] == biggest) && (i + 1) < size(x, 1))
+                i += 1
+            end
+            return lowerpos - rem(lowerpos, 1.0) + 1, i
+        end
+    end
+end
+
+##########################################################################
 
 ##########################################################################
 #
@@ -118,6 +169,6 @@ end
 
 
 println("mergesort: ", mergesort(tabell, 1))
-
+println("binaryintervalsearch: ", binaryintervalsearch(bintable, 0.1, 2))
 println("bruteforce: ",bruteforce(disttab))
 println("splitintwo: ",splitintwo(x, y))
