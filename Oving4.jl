@@ -4,7 +4,6 @@
 #    Implementer tellesortering på strenger
 #
 ##########################################################################
-
 stringlist1 = ["ccc", "cba", "ca", "ab", "abc"]
 
 function countingsortletters(A,position)
@@ -39,7 +38,6 @@ println(countingsortletters(stringlist1, 2))
 #    Implementer tellesortering på strenger etter lengde
 #
 ##########################################################################
-
 stringlist2 = ["bbbb", "", "aaaater", "ccc"]
 
 function countingsortlength(A)
@@ -75,7 +73,18 @@ println(countingsortlength(stringlist2))
 stringlist3 = ["kobra", "aggie", "agg", "kort", "hyblen"]
 
 function flexradix(A, maxlength)
+    tmp1 = String[]
+    for i in maxlength:-1:1
+        tmp2 = filter(e -> length(e) == i, A)
 
-    
+        if length(tmp2) != 0
+            prepend!(tmp1, tmp2)
+        end
+        tmp1 = countingsortletters(tmp1, i)
+    end
+    prepend!(tmp1, filter(e -> e == "", A))
+    return tmp1
 end
+
+println(flexradix(stringlist3, 6))
 ##########################################################################
