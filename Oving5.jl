@@ -207,22 +207,21 @@ function brokendnasearch(root, dna, i=1, sum=0)
     if (i <= length(dna))
         currentnode = root
         if (dna[i] == '?')
-            # possiblerouts = filter(x -> x == "ACTG", currentnode.children)
-            # println(currentnode.children)
-            sum += 5
+            possiblerouts = filter(x -> ('A' in x) || ('C' in x) || ('G' in x) || ('T' in x), currentnode.children)
+            println(possiblerouts)
             i += 1
             brokendnasearch(root, dna, i, sum)
         else
             currentnode = currentnode.children[dna[i]]
             i += 1
             brokendnasearch(root, dna, i, sum)
+            sum += currentnode.count
         end
     else
         return sum
     end
 end
-
-println(brokendnasearch(root2, s4))
+println(brokendnasearch(root1, s4))
 
 
 ### Konstruert testdata, la stå ###
