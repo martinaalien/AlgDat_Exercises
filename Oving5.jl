@@ -203,25 +203,38 @@ end
 
 
 ### Du skal implementere denne funksjonen ###
-function brokendnasearch(root, dna, i=1, sum=0)
-    if (i <= length(dna))
-        currentnode = root
-        if (dna[i] == '?')
-            possiblerouts = filter(x -> ('A' in x) || ('C' in x) || ('G' in x) || ('T' in x), currentnode.children)
-            println(possiblerouts)
-            i += 1
-            brokendnasearch(root, dna, i, sum)
-        else
-            currentnode = currentnode.children[dna[i]]
-            i += 1
-            brokendnasearch(root, dna, i, sum)
-            sum += currentnode.count
+function brokendnasearch(root, dna, i=1)
+    letter = Char(dna[i])
+    count_matches = 0
+    if i  ==  length(dna)
+        if letter != '?'
+            child = get(root.children, letter, 0)
+            if child == 0
+                return 0
+            end
+            return child.count
+        end 
+        last_count = 0 
+        for key in keys(root.children)
+            child = root.children[key]
+            last_count += child.count
+        end
+        return last_count 
+    end
+    if letter == '?'
+        for children in keys(root.children)
+            child = root.children[children]
+            count_matches += brokendnasearch(child, dna, i+1)
         end
     else
-        return sum
+        child = get(root.children, letter, 0)
+        if child == 0
+            return 0 
+        end
+        count_matches += brokendnasearch(child, dna, i+1)
     end
+    return count_matches
 end
-println(brokendnasearch(root1, s4))
 
 
 ### Konstruert testdata, la stå ###
@@ -235,13 +248,13 @@ root3 = Node(Dict('C' => Node(Dict('C' => Node(Dict('C' => Node(Dict('C' =>
 s1 = "A"
 s2 = "T"
 s3 = "?"
-s4 = "????"
+s4 = "??"
 s5 = "C?C"
 s6 = "???"
 s7 = "?????"
 
 
-#= 
+
 
 ### Tester ###
 # Disse testene blir kjør når du kjører filen
@@ -249,7 +262,6 @@ s7 = "?????"
 
 printstyled("\n\n\n---------------\nKjører tester!!\n---------------\n"; color = :magenta)
 
-            sum += 5
 using Test
 @testset "Tester" begin
 	@test brokendnasearch(root1, s1) == 1
@@ -268,5 +280,5 @@ end
 
 println("\nFungerte alt? Prøv å kjør koden i inginious!")
 println("Husk at disse testene ikke alltid sjekker alle edge-cases")
-println("---------------------------------------------------------\n\n") =#
+println("---------------------------------------------------------\n\n")
 ##########################################################################

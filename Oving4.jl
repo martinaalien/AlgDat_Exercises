@@ -73,17 +73,43 @@ println(countingsortlength(stringlist2))
 stringlist3 = ["kobra", "aggie", "agg", "kort", "hyblen"]
 
 function flexradix(A, maxlength)
-    tmp1 = String[]
-    for i in maxlength:-1:1
-        tmp2 = filter(e -> length(e) == i, A)
 
-        if length(tmp2) != 0
-            prepend!(tmp1, tmp2)
+    # Sort A after length. This must be done as the 
+    # following algorithm can't sort for example 
+    # ['ab', 'a'] in the right order so it must be
+    # done by length  
+    A = countingsortlength(A)
+    
+
+    for digit in maxlength:-1:1
+        
+        # This array will include the words in A that 
+        # have length of digit or more
+        words = []
+        # This array will include the indexes from A that
+        # have a number that has a length of digit or more
+        indexes = []
+
+        # Find the elements with length longer than digit
+        for i in 1:length(A)
+            if length(A[i]) >= digit
+                push!(words, A[i])
+                push!(indexes, i)
+            end
         end
-        tmp1 = countingsortletters(tmp1, i)
+        
+        # Sort these words at position digit
+        words = countingsortletters(words, digit)
+
+        # Replace the indexes we took elements from in A 
+        # with the now sorted values 
+        for i in 1:length(words)
+            A[indexes[i]] = words[i]
+        end
+        
     end
-    prepend!(tmp1, filter(e -> e == "", A))
-    return tmp1
+
+    return A
 end
 
 println(flexradix(stringlist3, 6))
