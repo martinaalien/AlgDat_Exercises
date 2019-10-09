@@ -205,7 +205,7 @@ end
 ### Du skal implementere denne funksjonen ###
 function brokendnasearch(root, dna, i=1)
     letter = Char(dna[i])
-    count_matches = 0
+    sum_matches = 0
     if i  ==  length(dna)
         if letter != '?'
             child = get(root.children, letter, 0)
@@ -224,16 +224,16 @@ function brokendnasearch(root, dna, i=1)
     if letter == '?'
         for children in keys(root.children)
             child = root.children[children]
-            count_matches += brokendnasearch(child, dna, i+1)
+            sum_matches += brokendnasearch(child, dna, i+1)
         end
     else
         child = get(root.children, letter, 0)
         if child == 0
             return 0 
         end
-        count_matches += brokendnasearch(child, dna, i+1)
+        sum_matches += brokendnasearch(child, dna, i+1)
     end
-    return count_matches
+    return sum_matches
 end
 
 
