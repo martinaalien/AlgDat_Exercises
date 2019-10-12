@@ -85,16 +85,23 @@ println("---------------------------------------------------------\n\n")
 #
 ##########################################################################
 function cumulative(weights)
-    rows, cols = size(matrix)
+    rows, cols = size(weights)
     min = -Inf
     for i in 1:rows-1
-        min = minimum(weights[1, 1], weights[2, 1])
-        weights[1, 2] = min
-        for j in 2:cols-1
-           
+        for j in 1:cols
+            if (j == 1)
+                min = minimum(weights[i, 1:2])
+                weights[i+1, 1] = min + weights[i+1, 1]
+            elseif (j == cols)
+                min = minimum(weights[i, j-1:j])
+                weights[i+1, j] = min + weights[i+1, j]
+            else
+                min = minimum(weights[i, j-1:j+1])
+                weights[i+1, j] = min + weights[i+1, j] 
+            end
         end
-
     end
+    return weights
 end
 
 
