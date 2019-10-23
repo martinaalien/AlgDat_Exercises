@@ -80,7 +80,28 @@ println("---------------------------------------------------------\n\n")
 ##########################################################################
 
 function mincoins(coins, value)
-    # din kode her
+    if (usegreed(coins))
+        return mincoinsgreedy(coins, value)
+    else
+        table = Array{Int64}(undef, value + 1)
+        table[1] = 0
+        tmpRes = 0
+        inf = typemax(Int)
+        for i in 2:value+1
+            table[i] = inf
+        end
+        for i in 2:value+1
+            for j in 1:length(coins)
+                if (coins[j] < i)
+                    tmpRes = table[i - coins[j]]
+                    if ((tmpRes != inf) & (tmpRes + 1 < table[i]))
+                        table[i] = tmpRes + 1
+                    end
+                end
+            end
+        end
+        return table[value + 1]
+    end
 end
 
 ### Tester ###
