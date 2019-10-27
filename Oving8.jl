@@ -3,7 +3,7 @@
 #   Konstruer grafen 
 #
 ##########################################################################
-
+try
 mutable struct Node
     i::Int
     j::Int
@@ -13,34 +13,49 @@ mutable struct Node
     distance::Union{Int,Nothing}
     predecessor::Union{Node,Nothing}
 end
+catch
+end
 Node(i, j, floor=true) = Node(i, j, floor, [], nothing, nothing, nothing)
 
 
 ### Du skal implementere denne funksjonen ###
 function mazetonodelist(maze)
-    # Vi lager en matrise nodearray med størrelse tilsvarende maze,
-    # men med Node-objekter isteden
-    nodearray = Array{Node}(undef, size(maze, 1), size(maze, 2))
-
+    nodearray::Array{Node} = []
+    counter = 1
     for i in 1:size(maze, 1)
         for j in 1:size(maze, 2)
-            # Fyll inn kode for å oppdatere nodearray
-            if (maze[i, j] = 1)
-                append!(nodearray, maze[i, j])
+            if (maze[i, j] == 1)
+                # nodearray[counter] = Node(i, j, true, [], nothing, nothing, nothing)
+                push!(nodearray, Node(i, j, true, [], nothing, nothing, nothing))
+                try 
+                    if (maze[i-1, j] == 1)
+                        push!(nodearray[counter].neighbors, Node(i - 1, j, true, [], nothing, nothing, nothing))
+                    end
+                catch
+                end
+                try 
+                    if (maze[i, j-1] == 1)
+                        push!(nodearray[counter].neighbors, Node(i, j-1, true, [], nothing, nothing, nothing))
+                    end
+                catch
+                end
+                try 
+                    if (maze[i+1, j] == 1)
+                        push!(nodearray[counter].neighbors, Node(i + 1, j, true, [], nothing, nothing, nothing))
+                    end
+                catch
+                end
+                try 
+                    if (maze[i, j+1] == 1)
+                        push!(nodearray[counter].neighbors, Node(i, j + 1, true, [], nothing, nothing, nothing))
+                    end
+                catch
+                end
+                counter += 1
             end
         end
     end
-
-    for i in 1:size(maze, 1)
-        for j in 1:size(maze, 2)
-            # Fyll inn kode for å oppdatere neighbors til hver node
-            # (Husk at naboene alltid er rett over, rett under,
-            #  rett til venstre og/eller rett til høyre)
-
-        end
-    end
-
-    # Fyll inn kode for å returnere en nodeliste ut ifra nodearray
+    return nodearray
 end
 
 
