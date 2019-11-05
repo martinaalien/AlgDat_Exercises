@@ -1,3 +1,3 @@
 # AlgDat_Exercises
 
-Øvinger i faget Algoritmer og Datastrukturer (TDT4120)
+Exercises in the course Algoritmer og Datastrukturer (TDT4120)
